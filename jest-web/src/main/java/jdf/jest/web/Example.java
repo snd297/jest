@@ -2,7 +2,7 @@ package jdf.jest.web;
 
 import com.google.sitebricks.At;
 
-@At("/")
+@At("/hello")
 public class Example {
 	private String message = "Hello";
 
