@@ -24,7 +24,7 @@ public class Message extends JestEntity {
 	private User author;
 	private Messages parent;
 
-	Message() {}
+	public Message() {}
 
 	public Message(User author, String body, Messages parent) {
 		this.author = author;

@@ -57,6 +57,7 @@ public class MessagesHtml {
 	public void listBlogs() {
 		try {
 			sess.getTransaction().commit();
+			
 		} finally {
 			PersistenceUtil.commit(sess);
 			PersistenceUtil.close(sess);
