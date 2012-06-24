@@ -12,6 +12,26 @@ public final class PersistenceUtil {
 	private static Logger logger =
 			LoggerFactory.getLogger(PersistenceUtil.class);
 
+	public static void commit(@Nullable Session sess) {
+		if (sess != null && sess.isOpen()) {
+			try {
+				sess.getTransaction().commit();
+			} catch (Exception e) {
+				logger.error("exception committing trx", e);
+			}
+		}
+	}
+
+	public static void commit(@Nullable Transaction trx) {
+		if (trx != null && trx.isActive()) {
+			try {
+				trx.commit();
+			} catch (Exception e) {
+				logger.error("exception committing trx", e);
+			}
+		}
+	}
+
 	public static void close(@Nullable Session sess) {
 		if (sess != null && sess.isOpen()) {
 			try {
@@ -22,7 +42,7 @@ public final class PersistenceUtil {
 		}
 	}
 
-	public static void rollback(Transaction trx) {
+	public static void rollback(@Nullable Transaction trx) {
 		if (trx != null && trx.isActive()) {
 			try {
 				trx.rollback();

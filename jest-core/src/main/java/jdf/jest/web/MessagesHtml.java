@@ -15,12 +15,12 @@
  ******************************************************************************/
 package jdf.jest.web;
 
-import javax.transaction.Transaction;
-
 import jdf.jest.model.Messages;
+import jdf.jest.persistence.PersistenceUtil;
 
 import org.hibernate.Session;
 
+import com.google.inject.Inject;
 import com.google.sitebricks.At;
 import com.google.sitebricks.http.Get;
 import com.google.sitebricks.http.Post;
@@ -34,20 +34,33 @@ public class MessagesHtml {
 
 	private Messages messages = new Messages("Hello sailor!");
 
+	private Session sess;
+
+	@Inject
+	MessagesHtml(Session sess) {
+		this.sess = sess;
+		sess.beginTransaction();
+	}
+
 	@Post
 	public void postEntry() {
-		Session sess = null;
-		Transaction trx = null;
 		try {
-
+			sess.getTransaction().commit();
+		} catch (Exception e) {
+			PersistenceUtil.rollback(sess.getTransaction());
 		} finally {
-
+			PersistenceUtil.close(sess);
 		}
 	}
 
 	@Get
 	public void listBlogs() {
-		// this.blogs = .. ; //fetch from store
+		try {
+			sess.getTransaction().commit();
+		} finally {
+			PersistenceUtil.commit(sess);
+			PersistenceUtil.close(sess);
+		}
 	}
 	// get + set methods
 }
