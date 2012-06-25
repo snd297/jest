@@ -16,9 +16,11 @@ public class JestConfig extends GuiceServletContextListener {
 					@Override
 					protected void configureSitebricks() {
 						// scan class Example's package and all descendants
+						at("/hello").show(Example.class);
 						scan(Example.class.getPackage());
 					}
-				},
-				new JestPersistenceModule());
+				}
+				, new JestPersistenceModule()
+				);
 	}
 }

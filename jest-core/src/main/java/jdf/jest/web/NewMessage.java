@@ -15,6 +15,11 @@
  ******************************************************************************/
 package jdf.jest.web;
 
+import static com.google.common.collect.Iterables.getOnlyElement;
+
+import java.util.List;
+
+import jdf.jest.model.Message;
 import jdf.jest.model.Messages;
 import jdf.jest.persistence.PersistenceUtil;
 
@@ -30,14 +35,15 @@ import com.google.sitebricks.http.Post;
  * 
  */
 @At("/messages")
-public class MessagesHtml {
+public class NewMessage {
 
 	private Messages messages = new Messages("Hello sailor!");
+	private Message newMessage = new Message();
 
 	private Session sess;
 
 	@Inject
-	MessagesHtml(Session sess) {
+	NewMessage(Session sess) {
 		this.sess = sess;
 		sess.beginTransaction();
 	}
@@ -45,6 +51,17 @@ public class MessagesHtml {
 	@Post
 	public void postEntry() {
 		try {
+			@SuppressWarnings("unchecked")
+			List<Messages> messages =
+					sess.createQuery("from Messages m").list();
+			Messages ms = null;
+			if (messages.size() == 0) {
+				ms = new Messages("Hello sailor!");
+				sess.save(ms);
+			} else {
+				ms = getOnlyElement(messages);
+			}
+			ms.addMessage(newMessage);
 			sess.getTransaction().commit();
 		} catch (Exception e) {
 			PersistenceUtil.rollback(sess.getTransaction());
@@ -57,7 +74,7 @@ public class MessagesHtml {
 	public void listBlogs() {
 		try {
 			sess.getTransaction().commit();
-			
+
 		} finally {
 			PersistenceUtil.commit(sess);
 			PersistenceUtil.close(sess);
