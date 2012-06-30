@@ -17,6 +17,10 @@
 			<artifactId>jest-core</artifactId>
 			<version>${parent.version}</version>
 		</dependency>
+		<dependency>
+			<groupId>com.google.sitebricks</groupId>
+			<artifactId>sitebricks</artifactId>
+		</dependency>
 	</dependencies>
 	<build>
 		<finalName>jest-web</finalName>

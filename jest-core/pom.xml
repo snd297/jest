@@ -55,10 +55,6 @@
 			<artifactId>guice-servlet</artifactId>
 		</dependency>
 		<dependency>
-			<groupId>com.google.sitebricks</groupId>
-			<artifactId>sitebricks</artifactId>
-		</dependency>
-		<dependency>
 			<groupId>com.h2database</groupId>
 			<artifactId>h2</artifactId>
 		</dependency>
