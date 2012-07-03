@@ -35,7 +35,7 @@ import com.google.sitebricks.http.Post;
  * 
  */
 @At("/messages")
-public class NewMessage {
+public class MessagesPage {
 
 	private Messages messages = new Messages("Hello sailor!");
 	private Message newMessage = new Message();
@@ -43,14 +43,14 @@ public class NewMessage {
 	private Session sess;
 
 	@Inject
-	NewMessage(Session sess) {
+	MessagesPage(Session sess) {
 		this.sess = sess;
-		sess.beginTransaction();
 	}
 
 	@Post
 	public void postEntry() {
 		try {
+			sess.beginTransaction();
 			@SuppressWarnings("unchecked")
 			List<Messages> messages =
 					sess.createQuery("from Messages m").list();
@@ -73,6 +73,10 @@ public class NewMessage {
 	@Get
 	public void listBlogs() {
 		try {
+			sess.beginTransaction();
+			List<Messages> messages =
+					sess.createQuery("from Messages m").list();
+			
 			sess.getTransaction().commit();
 
 		} finally {
