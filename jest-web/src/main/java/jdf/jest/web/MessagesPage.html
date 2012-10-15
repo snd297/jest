@@ -1,9 +1,14 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+</head>
 <body>
-	<form action="/messages" method="post">
-		<textarea name="newMessage.body" rows="10" cols="40">entry</textarea>
-		<br /> <input type="submit" value="post entry" />
-	</form>
+	@Repeat(items=blogs, var="blog")
+	<div>
+		<div>${message.bodyPublic}</div>
+	</div>
+</body>
+</html>
 </body>
 </html>

@@ -15,6 +15,7 @@
  ******************************************************************************/
 package jdf.jest.web;
 
+import static com.google.common.base.Throwables.propagate;
 import static com.google.common.collect.Iterables.getOnlyElement;
 
 import java.util.List;
@@ -48,7 +49,7 @@ public class MessagesPage {
 	}
 
 	@Post
-	public void postEntry() {
+	public String postEntry() {
 		try {
 			sess.beginTransaction();
 			@SuppressWarnings("unchecked")
@@ -63,8 +64,10 @@ public class MessagesPage {
 			}
 			ms.addMessage(newMessage);
 			sess.getTransaction().commit();
+			return "messages";
 		} catch (Exception e) {
 			PersistenceUtil.rollback(sess.getTransaction());
+			throw propagate(e);
 		} finally {
 			PersistenceUtil.close(sess);
 		}
@@ -76,7 +79,7 @@ public class MessagesPage {
 			sess.beginTransaction();
 			List<Messages> messages =
 					sess.createQuery("from Messages m").list();
-			
+
 			sess.getTransaction().commit();
 
 		} finally {
